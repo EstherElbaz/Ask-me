@@ -1,0 +1,14 @@
+.home-container {
+  direction: rtl;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+.content {
+  padding-top: 80px; 
+  /* padding-inline: 2rem; */
+  text-align: right;
+}
