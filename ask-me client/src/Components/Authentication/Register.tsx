@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import MentorReq from "./MentorReq.tsx";
-import '../Styles/Form.css';
-import { createUser } from "../Services/userService.tsx";
+import MentorReq from "../MentorReq.tsx";
+import '../../Styles/Form.css';
+import { createUser } from "../../Services/userService.tsx";
 import { useNavigate } from "react-router-dom";
 
 const RegistrationForm: React.FC = () => {

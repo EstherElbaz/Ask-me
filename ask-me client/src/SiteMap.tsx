@@ -1,8 +1,8 @@
 import React, { JSX, useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./Components/Home.tsx";
-import RegistrationForm from "./Components/Register.tsx";
-import LoginForm from "./Components/LoginForm.tsx";
+import RegistrationForm from "./Components/Authentication/Register.tsx";
+import LoginForm from "./Components/Authentication/LoginForm.tsx";
 import { UserContext } from "./Contexts/UserContext.tsx";
 import AdminArea from "./Components/Admin.tsx";
 import PageNotFound from "./Components/PageNotFound.tsx";

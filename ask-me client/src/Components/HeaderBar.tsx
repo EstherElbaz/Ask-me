@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../Contexts/UserContext.tsx';
 import '../Styles/HeaderBar.css';
-import AdminArea from './Admin.tsx';
 
 const HeaderBar: React.FC = () => {
 
@@ -31,7 +30,7 @@ const HeaderBar: React.FC = () => {
                 {isAdmin && (
                     <button onClick={() => navigate("/admin")}>
                         לעמוד הניהול
-                    </button> )}
+                    </button>)}
             </div>
             <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
                 ☰

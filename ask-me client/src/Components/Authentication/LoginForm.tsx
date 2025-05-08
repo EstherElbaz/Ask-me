@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import { UserContext } from "../Contexts/UserContext.tsx";
-import '../Styles/Form.css';
+import { UserContext } from "../../Contexts/UserContext.tsx";
+import '../../Styles/Form.css';
 import { useNavigate } from "react-router-dom";
-import { checkUser } from "../Services/userService.tsx";
+import { checkUser } from "../../Services/userService.tsx";
 
 const LoginForm: React.FC = () => {
     const { setUser } = useContext(UserContext);
