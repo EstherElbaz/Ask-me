@@ -1,16 +1,24 @@
 import React from 'react';
-import CategoryQuestions from './CategoryQuestions.tsx';
+import { useNavigate } from 'react-router-dom';
 import { categories, mockQuestions } from './data.tsx';
+import "../Styles/Categories.css";
 
 const CategoriesSection: React.FC = () => {
+    const navigate = useNavigate();
+
+    const handleCategoryClick = (id: number) => {
+        navigate(`/category/${id}`);
+    };
     return (
-        <div>
+        <div className="container">
             {categories.map((cat) => (
-                <CategoryQuestions
-                    key={cat}
-                    category={cat}
-                    questions={mockQuestions.filter(q => q.category === cat)}
-                />
+                <div key={cat.id}
+                    className="category-item"
+                    onClick={() => handleCategoryClick(cat.id)}
+                    style={{ cursor: 'pointer' }}>
+                    {cat.description}
+
+                </div>
             ))}
         </div>
     );

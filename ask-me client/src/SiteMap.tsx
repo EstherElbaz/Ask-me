@@ -7,6 +7,8 @@ import { UserContext } from "./Contexts/UserContext.tsx";
 import AdminArea from "./Components/Admin.tsx";
 import PageNotFound from "./Components/PageNotFound.tsx";
 import Profile from "./Components/Profile.tsx";
+import CategoryPage from "./Components/CategoryPage.tsx";
+import QuestionPage from "./Components/QuestionPage.tsx";
 
 const SiteMap: React.FC = () => {
     const { user } = useContext(UserContext);
@@ -20,10 +22,12 @@ const SiteMap: React.FC = () => {
             <Route path="/register" element={<RegistrationForm />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/admin" element={isAdmin ? <AdminArea /> : <Navigate to="*" />} />
-            <Route path="/profile" element={<Profile/>}/>
-            <Route path="*" element={<PageNotFound/>} />
-
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<PageNotFound />} />
+            <Route path="/category/:categoryId" element={<CategoryPage />} />
+            <Route path="/question/:id" element={<QuestionPage />} />
         </Routes>
+    
     );
 };
 

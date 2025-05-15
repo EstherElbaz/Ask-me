@@ -6,9 +6,9 @@ const QuestionsList: React.FC = () => {
     
     return (
         <div>
-            {mockQuestions.slice(0, 3).map((q) => (
+            {/* {mockQuestions.slice(0, 3).map((q) => (
                 <QuestionItem key={q.id} question={q} />
-            ))}
+            ))} */}
         </div>
     );
 };
