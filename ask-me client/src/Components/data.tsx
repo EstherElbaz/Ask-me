@@ -64,13 +64,3 @@ export const mockQuestions = [
   },
 ];
 
-
-export const categories = [
-  { id: 1, description: "זוגיות והורות" },
-  { id: 2, description: "ספורט" },
-  { id: 3, description: "בריאות" },
-  { id: 4, description: "מוזיקה" },
-  { id: 5, description: "תזונה" },
-  { id: 6, description: "קריירה" },
-  { id: 7, description: "יחסים חברתיים" },
-];

@@ -1,5 +1,35 @@
 [
-  { "id": 1, "description": "תכנות" },
-  { "id": 2, "description": "מוזיקה" },
-  { "id": 3, "description": "עיצוב גרפי" }
+    {
+        "id": 1,
+        "description": "קריירה"
+    },
+    {
+        "id": 2,
+        "description": "מוזיקה"
+    },
+    {
+        "id": 3,
+        "description": "זוגיות, הורות ומשפחה"
+    },
+    {
+        "id": 4,
+        "description": "בריאות"
+    },
+    {
+        "id": 5,
+        "description": "תזונה"
+    },
+    {
+        "id": 6,
+        "description": "יהדות"
+    },
+    {
+        "id": 7,
+        "description": "חוק ומיסים"
+    },
+     {
+        "id": 7,
+        "description": "עולם הנפש"
+    }
+    
 ]

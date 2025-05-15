@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../Contexts/UserContext.tsx';
+import logo from '../assets/logo.png';
 import '../Styles/HeaderBar.css';
 
 const HeaderBar: React.FC = () => {
@@ -22,6 +23,9 @@ const HeaderBar: React.FC = () => {
 
     return (
         <div className="header-bar">
+            <div className="logo-container">
+                <img src={logo} alt="לוגו" className="logo-image" />
+            </div>
             <span>שלום {user?.fullName}</span>
             {/* <span>{date.toString()}</span> */}
             <div className={`button-group ${menuOpen ? 'open' : ''}`}>

@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QuestionItem from "./Question.tsx";
 import { useParams } from "react-router-dom";
-import { categories, mockQuestions } from "./data.tsx";
+import { mockQuestions } from "./data.tsx";
 import AddQuestion from "./AddQuestion.tsx";
+import { getCategoryById } from "../Services/categoriesService.tsx";
+import { Category, Question } from "../Models/Models.tsx";
 
 const CategoryPage: React.FC = () => {
+
   const { categoryId } = useParams<{ categoryId: string }>();
+  const [category, setCategory] = useState<Category | null>(null);
 
   const id = parseInt(categoryId || '0');
-  const category = categories.find((c) => c.id === id);
-
-  const [questions, setQuestions] = useState(
-    mockQuestions.filter(
-      (q) => q.categoryId === Number(category?.id))
-  );
 
   const [showModal, setShowModal] = useState(false);
+
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   const handleAddQuestion = (newQ: { text: string; userId: string; categoryId: number }) => {
     const newQuestion = {
@@ -26,6 +26,30 @@ const CategoryPage: React.FC = () => {
     };
     setQuestions([...questions, newQuestion]);
   };
+
+  const fetchCategory = async () => {
+    try {
+      const data = await (getCategoryById(id));
+      setCategory(data);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
+  };
+
+  const fetchQuestions = async () => {
+    const filtered = mockQuestions.filter((q) => q.categoryId === category!.id);
+    setQuestions(filtered);
+  }
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+  useEffect(() => {
+    if (category) {
+      fetchQuestions();
+    }
+  }, [category]);
+
 
   return (
     <div style={{ padding: '2rem' }}>
@@ -52,9 +76,12 @@ const CategoryPage: React.FC = () => {
           onAdd={handleAddQuestion}
         />
       )}
-      {questions.map((q) => (
-        <QuestionItem key={q.id} question={q} />
-      ))}
+      {questions.length === 0 ? (
+        <p style={{ marginTop: '2rem' }}>אין עדיין שאלות בקטגוריה זו.</p>
+      ) :
+        questions.map((q) => (
+          <QuestionItem key={q.id} question={q} />
+        ))}
 
     </div>
   );

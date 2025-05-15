@@ -18,22 +18,22 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.checkUser = async (req, res) => {
-  const email = req.params.email;  
-  const { password } = req.body;  
-  
+  const email = req.params.email;
+  const { password } = req.body;
+
   const users = await readData();
   const user = users.find(u => u.email === email && u.password === password);
 
   if (user) {
-      res.json(user);
+    res.json(user);
   } else {
-      res.status(404).send('Invalid credentials');
+    res.status(404).send('Invalid credentials');
   }
 };
 
 exports.addUser = async (req, res) => {
-    console.log("Received user:", req.body);
-    console.log("in add user");
+  console.log("Received user:", req.body);
+  console.log("in add user");
   const users = await readData();
   const newUser = { id: Date.now(), ...req.body };
   users.push(newUser);
