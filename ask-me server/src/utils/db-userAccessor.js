@@ -8,9 +8,11 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 const emojis = ['😀', '🎉', '🚀', '💡', '🎶', '🌟', '🐱‍👤', '🧠', '📚', '🧁'];
 
 async function getAllUsers() {
+  console.log("in accessor");
+  
   try {
     const command = new ScanCommand({
-      TableName: "users"
+      TableName: "Users"
     });
 
     const response = await ddbDocClient.send(command);

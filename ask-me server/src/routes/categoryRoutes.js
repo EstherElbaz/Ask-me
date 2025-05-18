@@ -6,7 +6,3 @@ router.get('/', getAllCategories);
 router.get('/:id', getCategoryById);
 
 module.exports = router;
-
-
-
-// check
