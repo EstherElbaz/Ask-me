@@ -12,10 +12,25 @@ const writeData = async (data) => {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
 };
 
+// exports.getUsers = async (req, res) => {
+//   const users = await readData();
+//   res.json(users);
+// };
+
+
+const userAccessor = require("../utils/db-userAccessor.js");
+
 exports.getUsers = async (req, res) => {
-  const users = await readData();
-  res.json(users);
+  try {
+    console.log("in try getting users");
+    
+    const users = await userAccessor.getAllUsers();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
 };
+
 
 exports.checkUser = async (req, res) => {
   const email = req.params.email;
