@@ -1,11 +1,9 @@
-// src/utils/db-userAccessor.js
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, ScanCommand } = require("@aws-sdk/lib-dynamodb");
+const { PutCommand } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({});
 const ddbDocClient = DynamoDBDocumentClient.from(client);
-
-const emojis = ['😀', '🎉', '🚀', '💡', '🎶', '🌟', '🐱‍👤', '🧠', '📚', '🧁'];
 
 async function getAllUsers() {
   console.log("in accessor");
@@ -19,8 +17,7 @@ async function getAllUsers() {
 
     console.log("📦 Users from DynamoDB:");
     response.Items.forEach((user, index) => {
-      const emoji = emojis[index % emojis.length];
-      console.log(`${emoji} ${JSON.stringify(user)}`);
+      console.log(` ${JSON.stringify(user)}`);
     });
 
     return response.Items;
@@ -30,6 +27,26 @@ async function getAllUsers() {
   }
 }
 
+async function addUser(user) {
+  console.log("📤 Adding user to DynamoDB:", user);
+
+  try {
+    const command = new PutCommand({
+      TableName: "Users",
+      Item: user
+    });
+
+    await ddbDocClient.send(command);
+
+    console.log("✅ User added successfully");
+    return { success: true, message: "User added" };
+  } catch (err) {
+    console.error("❌ Error adding user:", err);
+    throw err;
+  }
+}
+
 module.exports = {
   getAllUsers,
+  addUser,
 };
