@@ -1,18 +1,17 @@
 const fs = require("fs-extra");
 const path = require("path");
-const userAccessor = require("../utils/db-userAccessor.js");
+
+const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
+
+const userAccessor = require("../utils/db-userAccessor.js");
 const { sendWelcomeEmail } = require("../services/mailService.js");
 
-
 exports.getUsers = async (req, res) => {
-  console.log("in try getting users");
   try {
     const users = await userAccessor.getAllUsers();
     res.json(users);
   } catch (error) {
-    console.error("Error in getUsers:", error?.message || error);
-    console.error("Full error object:", error);
     res.status(500).json({ error: error, });
   }
 };
@@ -22,21 +21,35 @@ exports.addUser = async (req, res) => {
   try {
     const user = req.body;
 
+    
+
     if (!user || !user.userName || !user.password || !user.fullName || !user.email) {
       return res.status(400).json({ error: "Missing required user fields" });
     }
+
     const userId = uuidv4();
     console.log(userId);
     user.id = userId;
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+    console.log(user.password, hashedPassword);
+    user.password = hashedPassword
+
     await userAccessor.addUser(user);
-    await sendWelcomeEmail(user.email,user.fullName);
+    await sendWelcomeEmail(user.email, user.fullName);
     res.status(201).json({ message: "User added successfully" });
-    
+
   } catch (err) {
     console.error("❌ Error in controller addUser:", err);
     res.status(500).json({ error: "Failed to add user" });
   }
 }
+
+
+
+
+
 
 const filePath = path.join(__dirname, "../data/users.json");
 
