@@ -3,7 +3,6 @@
 Welcome to the **Smart Q&A System** – an intelligent and user-focused platform where knowledge meets purpose.
 
 This is my flagship full-stack project, built from scratch with a clean architecture, layered backend, strong UI/UX, and a vision:  
-> **Helping people. Empowering professionals. Growing as a developer.**
 
 ---
 
