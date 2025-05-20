@@ -13,11 +13,6 @@ A modern Q&A web platform that lets users:
 - Get expert answers
 - Grow their credibility and help others in their field
 
-Built to serve:
-1. **People who seek real, professional answers**
-2. **Experts who want to share knowledge and build a reputation**
-3. **My own journey to master full-stack system design**
-
 ---
 
 ## 🛠 Tech Stack
@@ -33,7 +28,7 @@ Built to serve:
 ### 🌐 Backend
 - Node.js + Express.js
 - Layered architecture: routes, controllers, services, repositories, models
-- MongoDB with Mongoose
+- AWS DynamoDB
 - Authentication with JWT (login/registration)
 - Password encryption with bcrypt
 - Role-based access: regular users, mentors, admins
