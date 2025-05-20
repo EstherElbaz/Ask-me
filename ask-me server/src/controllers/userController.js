@@ -3,6 +3,10 @@ const path = require("path");
 
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = process.env.JWT_SECRET_KEY;
+require("dotenv").config();
+
 
 const userAccessor = require("../utils/db-userAccessor.js");
 const { sendWelcomeEmail } = require("../services/mailService.js");
@@ -19,9 +23,9 @@ exports.getUsers = async (req, res) => {
 exports.loginUser = async (req, res) => {
   console.log("in loginUser in controller");
 
-  
+
   const { email, password } = req.body;
-  console.log(email,password);
+  console.log(email, password);
 
   try {
     const user = await userAccessor.getUserByEmail(email);
@@ -29,13 +33,16 @@ exports.loginUser = async (req, res) => {
       return res.status(404).json({ message: "User not found. Please try again." });
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log(password,"  ", passwordMatch);
+    console.log(password, "  ", passwordMatch);
     if (!passwordMatch) {
       return res.status(401).json({ message: "Incorrect password. Please try again." });
     }
 
     user.password = null;
-    return res.status(200).json(user);
+    const token = createJWTToken(user.id, user.email);
+
+    return res.status(200).json({ user, token });
+
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).json({ message: "Internal server error" });
@@ -78,7 +85,14 @@ const hashPassword = async (password) => {
   return await bcrypt.hash(password, saltRounds);
 }
 
-
+const createJWTToken = (userId, userEmail) => {
+  const token = jwt.sign(
+    { id: userId, email: userEmail },
+    SECRET_KEY,
+    { expiresIn: '8h' }
+  );
+  return token;
+}
 
 
 

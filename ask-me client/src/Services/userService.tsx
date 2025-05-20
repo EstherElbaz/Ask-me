@@ -14,7 +14,7 @@ export const checkUser = async (email: string, password: string): Promise<User> 
 
         if (!response.ok) {
             console.log("תגובה לא תקינה");
-            
+
             switch (response.status) {
                 case 404:
                     throw new Error("מייל לא קיים. ");
@@ -26,8 +26,11 @@ export const checkUser = async (email: string, password: string): Promise<User> 
             }
         }
 
-        const user = await response.json();
-        return user;
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+
+        console.log(data.user);
+        return data.user;
     } catch (err) {
         console.error('Login error:', err);
         throw err;
