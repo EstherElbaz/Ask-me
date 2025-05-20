@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, ScanCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, ScanCommand, QueryCommand } = require("@aws-sdk/lib-dynamodb");
 const { PutCommand } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({});
@@ -7,7 +7,7 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 
 async function getAllUsers() {
   console.log("in accessor");
-  
+
   try {
     const command = new ScanCommand({
       TableName: "Users"
@@ -38,15 +38,40 @@ async function addUser(user) {
 
     await ddbDocClient.send(command);
 
-    console.log("✅ User added successfully");
+    console.log("User added successfully");
     return { success: true, message: "User added" };
   } catch (err) {
-    console.error("❌ Error adding user:", err);
+    console.error("Error adding user:", err);
     throw err;
   }
 }
 
+const getUserByEmail = async (email) => {
+
+  const params = {
+    TableName: 'Users',
+    IndexName: 'email-index',
+    KeyConditionExpression: 'email = :email',
+    ExpressionAttributeValues: {
+      ':email': email
+    }
+  };
+
+  try {
+    const result = await ddbDocClient.send(new QueryCommand(params));
+    if (result.Items.length === 0) {
+      return null;
+    }
+    return result.Items[0];
+
+  } catch (error) {
+    console.error('Error in getUserByEmail:', error);
+    throw new Error('Failed to get user by email');
+  }
+};
+
 module.exports = {
   getAllUsers,
   addUser,
+  getUserByEmail,
 };

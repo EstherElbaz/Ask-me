@@ -16,29 +16,44 @@ exports.getUsers = async (req, res) => {
   }
 };
 
+exports.loginUser = async (req, res) => {
+  console.log("in loginUser in controller");
+
+  
+  const { email, password } = req.body;
+  console.log(email,password);
+
+  try {
+    const user = await userAccessor.getUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "User not found. Please try again." });
+    }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    console.log(password,"  ", passwordMatch);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Incorrect password. Please try again." });
+    }
+
+    user.password = null;
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+
+}
+
 exports.addUser = async (req, res) => {
   console.log("in add user - controller");
   try {
     const user = req.body;
-
-    
-
-    if (!user || !user.userName || !user.password || !user.fullName || !user.email) {
-      return res.status(400).json({ error: "Missing required user fields" });
-    }
-
-    const userId = uuidv4();
-    console.log(userId);
-    user.id = userId;
-
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-    console.log(user.password, hashedPassword);
-    user.password = hashedPassword
+    validateUser(user);
+    user.id = createUserId();
+    user.password = await hashPassword(user.password);
 
     await userAccessor.addUser(user);
-    await sendWelcomeEmail(user.email, user.fullName);
     res.status(201).json({ message: "User added successfully" });
+    await sendWelcomeEmail(user.email, user.fullName);
 
   } catch (err) {
     console.error("❌ Error in controller addUser:", err);
@@ -46,6 +61,22 @@ exports.addUser = async (req, res) => {
   }
 }
 
+const validateUser = async (user) => {
+  if (!user || !user.userName || !user.password || !user.fullName || !user.email) {
+    throw new Error("Missing required user fields-validate user func");
+  }
+  const existingUser = await userAccessor.getUserByEmail(user.email);
+  if (existingUser) {
+    throw new Error("User with this email already exists");
+  }
+}
+
+const createUserId = () => uuidv4();
+
+const hashPassword = async (password) => {
+  const saltRounds = 10;
+  return await bcrypt.hash(password, saltRounds);
+}
 
 
 
@@ -60,20 +91,6 @@ const readData = async () => {
 
 const writeData = async (data) => {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-};
-
-exports.checkUser = async (req, res) => {
-  const email = req.params.email;
-  const { password } = req.body;
-
-  const users = await readData();
-  const user = users.find(u => u.email === email && u.password === password);
-
-  if (user) {
-    res.json(user);
-  } else {
-    res.status(404).send('Invalid credentials');
-  }
 };
 
 exports.updateUser = async (req, res) => {
@@ -103,4 +120,18 @@ exports.deleteUser = async (req, res) => {
 //   users.push(newUser);
 //   await writeData(users);
 //   res.status(201).json(newUser);
+// };
+
+// exports.checkUser = async (req, res) => {
+//   const email = req.params.email;
+//   const { password } = req.body;
+
+//   const users = await readData();
+//   const user = users.find(u => u.email === email && u.password === password);
+
+//   if (user) {
+//     res.json(user);
+//   } else {
+//     res.status(404).send('Invalid credentials');
+//   }
 // };
