@@ -63,7 +63,7 @@ exports.addUser = async (req, res) => {
     await sendWelcomeEmail(user.email, user.fullName);
 
   } catch (err) {
-    console.error("❌ Error in controller addUser:", err);
+    console.error("Error in controller addUser:", err);
     res.status(500).json({ error: "Failed to add user" });
   }
 }

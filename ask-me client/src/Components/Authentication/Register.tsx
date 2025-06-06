@@ -3,6 +3,8 @@ import MentorReq from "../MentorReq.tsx";
 import '../../Styles/Form.css';
 import { createUser } from "../../Services/userService.tsx";
 import { useNavigate } from "react-router-dom";
+import logo from '../../assets/logo.png';
+
 
 const RegistrationForm: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
@@ -31,50 +33,52 @@ const RegistrationForm: React.FC = () => {
   };
 
   return (
-    <div className="form-container" dir="rtl">
-      <h2>ברוך הבא</h2>
-      <form onSubmit={handleSubmit} className="form">
-        <div className="input-group">
-          <label>שם מלא (לא יוצג)</label>
-          <input
-            type="text"
-            value={fullName}
-            onChange={(e) => setNames(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>אימייל (לא יוצג)</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>שם משתמש</label>
-          <input
-            type="text"
+    <div className="page-container">
+      <div className="form-container" dir="rtl">
+        <img src={logo} alt="לוגו" className="logo" />
+        <h2>ברוך הבא</h2>
+        <form onSubmit={handleSubmit} className="form">
+          <div className="input-group">
+            <label>שם מלא (לא יוצג)</label>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setNames(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label>אימייל (לא יוצג)</label>
+            <input
+              // type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label>שם משתמש</label>
+            <input
+              type="text"
 
-            onChange={(e) => setUserName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>צור את הסיסמה שלך</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
-        <button type="submit" className="submit-btn">הרשמה</button>
-      </form>
-      <MentorReq></MentorReq>
-    </div>
+              onChange={(e) => setUserName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label>צור את הסיסמה שלך</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
+          <button type="submit" className="submit-btn">הרשמה</button>
+        </form>
+        <MentorReq></MentorReq>
+      </div></div>
   );
 };
 
